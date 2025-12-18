@@ -1,5 +1,7 @@
 using EducacaoOnline.Api.Configurations;
+using EducacaoOnline.Core.Data;
 using EducacaoOnline.Core.Filters;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,11 @@ builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter
 builder.Services.AddAuthConfig(builder.Configuration);
 builder.AddSwagger();
 builder.AddDatabaseSelector();
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<UsuariosDbContext>();
+
 builder.Services.AddApiConfig(builder.Configuration);
 builder.AddMediator();
 builder.AddAutoMapper();
@@ -24,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

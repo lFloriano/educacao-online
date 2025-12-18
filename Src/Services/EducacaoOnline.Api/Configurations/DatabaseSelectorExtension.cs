@@ -28,8 +28,8 @@ public static partial class DatabaseSelectorExtension
                        .UseSqlite(builder.Configuration.GetConnectionString("GestaoFaturamentoConnectionLite"))
             );
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                   options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionLite"))
+            builder.Services.AddDbContext<UsuariosDbContext>(options =>
+                   options.UseSqlite(builder.Configuration.GetConnectionString("GestaoUsuariosConnectionLite"))
             );
         }
         else
@@ -48,8 +48,8 @@ public static partial class DatabaseSelectorExtension
                        .UseSqlite(builder.Configuration.GetConnectionString("GestaoFaturamentoConnection"))
             );
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            builder.Services.AddDbContext<UsuariosDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("GestaoUsuariosConnectionLite"))
             );
         }
     }

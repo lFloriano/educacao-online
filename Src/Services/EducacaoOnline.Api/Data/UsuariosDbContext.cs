@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EducacaoOnline.Core.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class UsuariosDbContext : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public UsuariosDbContext(DbContextOptions<UsuariosDbContext> options)
             : base(options)
         {
         }
