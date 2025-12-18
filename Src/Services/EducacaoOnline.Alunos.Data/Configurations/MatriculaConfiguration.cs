@@ -35,10 +35,24 @@ namespace EducacaoOnline.Alunos.Data.Configurations
                 .HasForeignKey<Certificado>(c => c.MatriculaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(m => m.AulasConcluidas)
-                .WithOne(c => c.Matricula)
-                .HasForeignKey(c => c.MatriculaId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.OwnsMany(m => m.HistoricoAprendizado, ab =>
+            {
+                ab.ToTable("HistoricoAprendizado");
+
+                ab.WithOwner()
+                    .HasForeignKey("MatriculaId");
+
+                ab.Property<Guid>("MatriculaId")
+                    .IsRequired();
+
+                ab.Property(h => h.AulaId)
+                    .IsRequired();
+
+                ab.Property(h => h.DataConclusao)
+                    .IsRequired();
+
+                ab.HasKey("MatriculaId", "AulaId");
+            });
         }
     }
 }

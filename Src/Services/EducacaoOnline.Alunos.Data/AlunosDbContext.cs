@@ -12,7 +12,6 @@ namespace EducacaoOnline.Alunos.Data
         public AlunosDbContext(DbContextOptions<AlunosDbContext> options) : base(options) { }
 
         public DbSet<Aluno> Alunos { get; set; }
-        public DbSet<AulaConcluida> AulasConcluidas { get; set; }
         public DbSet<HistoricoAprendizado> HistoricosAprendizado { get; set; }
         public DbSet<Matricula> Matriculas { get; set; }
         public DbSet<Certificado> Certificados { get; set; }

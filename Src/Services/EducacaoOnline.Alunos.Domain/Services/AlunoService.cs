@@ -1,6 +1,5 @@
-using Azure.Core;
-using EducacaoOnline.Alunos.Domain.Enums;
 using EducacaoOnline.Alunos.Domain.Repositories;
+using EducacaoOnline.Alunos.Domain.ValueObjects;
 using EducacaoOnline.Core.DomainObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,7 +65,7 @@ namespace EducacaoOnline.Alunos.Domain.Services
             return matricula;
         }
 
-        public async Task<AulaConcluida> RealizarAulaAsync(Guid alunoId, Guid cursoId, Guid aulaId)
+        public async Task<HistoricoAprendizado> RealizarAulaAsync(Guid alunoId, Guid cursoId, Guid aulaId)
         {
             var aluno = await _alunoRepository.ObterPorIdAsync(alunoId)
                 ?? throw new InvalidOperationException("Aluno não encontrado.");

@@ -1,4 +1,5 @@
 ﻿using EducacaoOnline.Alunos.Domain.Enums;
+using EducacaoOnline.Alunos.Domain.ValueObjects;
 using EducacaoOnline.Core.DomainObjects;
 
 namespace EducacaoOnline.Alunos.Domain
@@ -41,7 +42,7 @@ namespace EducacaoOnline.Alunos.Domain
             return matriculaPendente.AtivarMatricula();
         }
 
-        public AulaConcluida RealizarAula(Guid aulaId, Guid cursoId)
+        public HistoricoAprendizado RealizarAula(Guid aulaId, Guid cursoId)
         {
             if (!EstaMatriculadoNoCurso(cursoId))
                 throw new InvalidOperationException("Aluno não está matriculado no curso");

@@ -3,6 +3,7 @@ using System;
 using EducacaoOnline.Alunos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EducacaoOnline.Alunos.Data.Migrations
 {
     [DbContext(typeof(AlunosDbContext))]
-    partial class AlunosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251218190856_renameDoHistoricoAprendizado")]
+    partial class renameDoHistoricoAprendizado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");

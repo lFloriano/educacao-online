@@ -1,17 +1,14 @@
 ﻿namespace EducacaoOnline.Alunos.Domain.ValueObjects
 {
-    public class HistoricoAprendizado   //é uma projeção consolidando cursos finalizados
+    public record HistoricoAprendizado  //Objeto de valor representando aula concluída por um aluno
     {
-        public HistoricoAprendizado(Guid matriculaId)
+        public HistoricoAprendizado(Guid aulaId)
         {
-            MatriculaId = matriculaId;
-            DataConclusao = DateTime.Now;
+            AulaId = aulaId;
+            DataConclusao = DateTime.UtcNow;
         }
 
-        public Guid Id { get; private set; }
-        public Guid MatriculaId { get; private set; }
-        public DateTime DataConclusao { get; private set; }
-
-        public Matricula? Matricula { get; private set; }
+        public Guid AulaId { get; init; }
+        public DateTime DataConclusao { get; init; }
     }
 }

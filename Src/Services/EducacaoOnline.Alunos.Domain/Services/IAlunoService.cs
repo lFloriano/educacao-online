@@ -1,3 +1,5 @@
+using EducacaoOnline.Alunos.Domain.ValueObjects;
+
 namespace EducacaoOnline.Alunos.Domain.Services
 {
     /// <summary>
@@ -34,7 +36,7 @@ namespace EducacaoOnline.Alunos.Domain.Services
         /// <summary>
         /// Marca conclusão de uma aula para o aluno em um curso.
         /// </summary>
-        Task<AulaConcluida> RealizarAulaAsync(Guid alunoId, Guid cursoId, Guid aulaId);
+        Task<HistoricoAprendizado> RealizarAulaAsync(Guid alunoId, Guid cursoId, Guid aulaId);
 
         /// <summary>
         /// Finaliza o curso para o aluno (gera certificado/histórico na matrícula).

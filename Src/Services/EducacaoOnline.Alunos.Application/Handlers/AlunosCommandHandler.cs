@@ -64,7 +64,7 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             var curso = await _conteudoGateway.ObterCursoAsync(request.CursoId)
                 ?? throw new InvalidOperationException("Curso não encontrado no catálogo de Conteúdo.");
 
-            var aulasConcluidas = matricula.AulasConcluidas.Count;
+            var aulasConcluidas = matricula.HistoricoAprendizado.Count;
 
             if (aulasConcluidas < curso.NumeroAulas)
                 throw new InvalidOperationException("Aluno não concluiu todas as aulas do curso.");

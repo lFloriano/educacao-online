@@ -15,11 +15,9 @@ namespace EducacaoOnline.Alunos.Data.Repositories
         {
             return await _dbSet
                 .Include(a => a.Matriculas)
-                    .ThenInclude(m => m.AulasConcluidas)
+                    .ThenInclude(m => m.HistoricoAprendizado)
                 .Include(a => a.Matriculas)
                     .ThenInclude(m => m.Certificado)
-                .Include(a => a.Matriculas)
-                    .ThenInclude(m => m.HistoricoAprendizado)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
@@ -27,11 +25,9 @@ namespace EducacaoOnline.Alunos.Data.Repositories
         {
             return await _dbSet
                 .Include(a => a.Matriculas)
-                    .ThenInclude(m => m.AulasConcluidas)
+                    .ThenInclude(m => m.HistoricoAprendizado)
                 .Include(a => a.Matriculas)
                     .ThenInclude(m => m.Certificado)
-                .Include(a => a.Matriculas)
-                    .ThenInclude(m => m.HistoricoAprendizado)
                 .FirstOrDefaultAsync(a => a.Email.ToLower() == email.ToLower());
         }
 

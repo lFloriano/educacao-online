@@ -3,6 +3,7 @@ using System;
 using EducacaoOnline.Alunos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EducacaoOnline.Alunos.Data.Migrations
 {
     [DbContext(typeof(AlunosDbContext))]
-    partial class AlunosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251218185745_alteracaoDoHistoricoAprendizado")]
+    partial class alteracaoDoHistoricoAprendizado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
@@ -112,7 +115,7 @@ namespace EducacaoOnline.Alunos.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("EducacaoOnline.Alunos.Domain.ValueObjects.HistoricoAprendizado", "HistoricoAprendizado", b1 =>
+                    b.OwnsMany("EducacaoOnline.Alunos.Domain.ValueObjects.HistoricoAprendizado", "AulasConcluidas", b1 =>
                         {
                             b1.Property<Guid>("MatriculaId")
                                 .HasColumnType("TEXT");
@@ -126,7 +129,7 @@ namespace EducacaoOnline.Alunos.Data.Migrations
 
                             b1.HasKey("MatriculaId", "AulaId");
 
-                            b1.ToTable("HistoricoAprendizado", (string)null);
+                            b1.ToTable("AulasConcluidas", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MatriculaId");
@@ -134,7 +137,7 @@ namespace EducacaoOnline.Alunos.Data.Migrations
 
                     b.Navigation("Aluno");
 
-                    b.Navigation("HistoricoAprendizado");
+                    b.Navigation("AulasConcluidas");
                 });
 
             modelBuilder.Entity("EducacaoOnline.Alunos.Domain.Aluno", b =>
