@@ -103,7 +103,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CadastrarAluno([FromBody] CadastrarAlunoVm aluno)
+        public async Task<IActionResult> CadastrarAluno([FromBody] CadastrarAlunoRequest aluno)
         {
             var id = await _mediatorHandler.EnviarComando(new CadastrarAlunoCommand(aluno.Nome, aluno.Email, aluno.ConfirmacaoEmail));
             return Created();
