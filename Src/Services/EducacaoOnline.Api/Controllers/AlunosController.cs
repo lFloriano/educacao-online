@@ -3,14 +3,14 @@ using EducacaoOnline.Alunos.Application.Dtos;
 using EducacaoOnline.Alunos.Application.Queries;
 using EducacaoOnline.Alunos.Domain.Enums;
 using EducacaoOnline.Api.Models.Alunos;
-using EducacaoOnline.Conteudo.Domain;
 using EducacaoOnline.Core.Communication.Mediator;
-using EducacaoOnline.PagamentoFaturamento.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducacaoOnline.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/alunos")]
     public class AlunosController : ControllerBase
     {
@@ -20,7 +20,6 @@ namespace EducacaoOnline.Api.Controllers
         {
             _mediatorHandler = mediatorHandler;
         }
-
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(AlunoDto), StatusCodes.Status200OK)]

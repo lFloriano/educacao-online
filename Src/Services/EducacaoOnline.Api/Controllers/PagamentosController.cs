@@ -4,11 +4,13 @@ using EducacaoOnline.Core.Communication.Mediator;
 using EducacaoOnline.PagamentoFaturamento.Application.Commands;
 using EducacaoOnline.PagamentoFaturamento.Application.Dtos;
 using EducacaoOnline.PagamentoFaturamento.Application.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducacaoOnline.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/pagamentos")]
     public class PagamentosController : ControllerBase
     {

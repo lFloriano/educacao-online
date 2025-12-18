@@ -3,6 +3,7 @@ using EducacaoOnline.Conteudo.Application.Commands;
 using EducacaoOnline.Conteudo.Application.Dtos;
 using EducacaoOnline.Conteudo.Application.Queries;
 using EducacaoOnline.Core.Communication.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducacaoOnline.Api.Controllers
@@ -21,7 +22,6 @@ namespace EducacaoOnline.Api.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(CursoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ObterPorId([FromRoute] Guid id)
         {
             var curso = await _mediatorHandler.EnviarComando(new ObterCursoPorIdQuery(id));
@@ -35,7 +35,6 @@ namespace EducacaoOnline.Api.Controllers
         [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<CursoDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ObterTodos()
         {
             var cursos = await _mediatorHandler.EnviarComando(new ObterTodosOsCursosQuery());
@@ -49,7 +48,6 @@ namespace EducacaoOnline.Api.Controllers
         [HttpGet("{cursoId:guid}/aulas")]
         [ProducesResponseType(typeof(IEnumerable<AulaDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ObterAulaPorCursoId([FromRoute] Guid cursoId)
         {
             var aulas = await _mediatorHandler.EnviarComando(new ObterAulasPorCursoIdQuery(cursoId));
@@ -61,6 +59,7 @@ namespace EducacaoOnline.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -71,6 +70,7 @@ namespace EducacaoOnline.Api.Controllers
         }
 
         [HttpPost("{cursoId:guid}/aulas")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
