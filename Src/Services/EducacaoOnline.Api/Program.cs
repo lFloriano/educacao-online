@@ -10,10 +10,7 @@ builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter
 builder.Services.AddAuthConfig(builder.Configuration);
 builder.AddSwagger();
 builder.AddDatabaseSelector();
-builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<UsuariosDbContext>();
+builder.Services.AddIdentityConfig();
 
 builder.Services.AddApiConfig(builder.Configuration);
 builder.AddMediator();

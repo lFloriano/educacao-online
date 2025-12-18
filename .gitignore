@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Src/Services/EducacaoOnline.Api/Data/*
+/Src/Services/EducacaoOnline.Api/Data/gestao_alunos.db-wal
+/Src/Services/EducacaoOnline.Api/Data/gestao_conteudo.db-shm
+/Src/Services/EducacaoOnline.Api/Data/gestao_conteudo.db-wal
+/Src/Services/EducacaoOnline.Api/Data/gestao_faturamento.db-shm
+/Src/Services/EducacaoOnline.Api/Data/gestao_faturamento.db-wal

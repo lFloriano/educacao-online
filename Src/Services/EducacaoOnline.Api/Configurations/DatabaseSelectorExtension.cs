@@ -3,6 +3,7 @@ using EducacaoOnline.Api.Configurations.Seeder;
 using EducacaoOnline.Conteudo.Data;
 using EducacaoOnline.Core.Data;
 using EducacaoOnline.PagamentoFaturamento.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducacaoOnline.Api.Configurations;
@@ -60,17 +61,26 @@ public static partial class DatabaseSelectorExtension
         {
             var alunosDbContext = scope.ServiceProvider.GetRequiredService<AlunosDbContext>();
             var cursosDbContext = scope.ServiceProvider.GetRequiredService<CursosDbContext>();
+            var pagamentosDbContext = scope.ServiceProvider.GetRequiredService<PagamentosDbContext>();
+            var usuariosDbContext = scope.ServiceProvider.GetRequiredService<UsuariosDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            AplicarMigrations(alunosDbContext, cursosDbContext);
+            AplicarMigrations(alunosDbContext, cursosDbContext, pagamentosDbContext, usuariosDbContext);
+            SeederUsuarios.Seed(usuariosDbContext, userManager);
             SeederConteudo.Seed(cursosDbContext);
             SeederAlunos.Seed(alunosDbContext);
         }
     }
 
-    private static void AplicarMigrations(AlunosDbContext alunosDbContext, CursosDbContext cursosDbContext)
+    private static void AplicarMigrations(
+        AlunosDbContext alunosDbContext,
+        CursosDbContext cursosDbContext,
+        PagamentosDbContext pagamentosDbContext,
+        UsuariosDbContext usuariosDbContext)
     {
         alunosDbContext.Database.Migrate();
         cursosDbContext.Database.Migrate();
-        //TODO: add context de faturamento
+        pagamentosDbContext.Database.Migrate();
+        usuariosDbContext.Database.Migrate();
     }
 }
