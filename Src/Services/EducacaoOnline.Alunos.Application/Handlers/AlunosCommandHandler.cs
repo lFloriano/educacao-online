@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EducacaoOnline.Alunos.Application.Commands;
 using EducacaoOnline.Alunos.Application.Dtos;
-using EducacaoOnline.Alunos.Domain;
 using EducacaoOnline.Alunos.Domain.Enums;
 using EducacaoOnline.Alunos.Domain.Services;
 using EducacaoOnline.Core.Communication.Gateways;
@@ -11,10 +10,9 @@ using MediatR;
 namespace EducacaoOnline.Alunos.Application.Handlers
 {
     public class AlunosCommandHandler :
-        IRequestHandler<CadastrarAlunoCommand, Guid>,
         IRequestHandler<MatricularAlunoCommand, MatriculaCriadaDto>,
         IRequestHandler<AtivarMatriculaCommand, SituacaoMatricula>,
-        IRequestHandler<RealizarAulaCommand, AulaConcluidaDto>,
+        IRequestHandler<RealizarAulaCommand, HistoricoAprendizadoDto>,
         IRequestHandler<FinalizarCursoCommand, SituacaoMatricula>
     {
         private readonly IAlunoService _alunoService;
@@ -39,7 +37,7 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             return _mapper.Map<MatriculaCriadaDto>(matricula);
         }
 
-        public async Task<AulaConcluidaDto> Handle(RealizarAulaCommand request, CancellationToken cancellationToken)
+        public async Task<HistoricoAprendizadoDto> Handle(RealizarAulaCommand request, CancellationToken cancellationToken)
         {
             var curso = await _conteudoGateway.ObterCursoAsync(request.CursoId)
                 ?? throw new InvalidOperationException("Curso não encontrado no catálogo de Conteúdo.");
@@ -49,8 +47,8 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             if (!aulaPertenceAoCurso)
                 throw new InvalidOperationException("Aula não encontrada no catálogo do Curso.");
 
-            var aulaConcluida = await _alunoService.RealizarAulaAsync(request.AlunoId, request.CursoId, request.AulaId);
-            return _mapper.Map<AulaConcluidaDto>(aulaConcluida);
+            var historicoAprendizado = await _alunoService.RealizarAulaAsync(request.AlunoId, request.CursoId, request.AulaId);
+            return _mapper.Map<HistoricoAprendizadoDto>(historicoAprendizado);
         }
 
         public async Task<SituacaoMatricula> Handle(FinalizarCursoCommand request, CancellationToken cancellationToken)
@@ -71,15 +69,6 @@ namespace EducacaoOnline.Alunos.Application.Handlers
 
             var matriculaFinalizada = await _alunoService.FinalizarCursoAsync(request.AlunoId, request.CursoId);
             return matricula.Situacao;
-        }
-
-        public async Task<Guid> Handle(CadastrarAlunoCommand request, CancellationToken cancellationToken)
-        {
-            //TODO: validar nome e email
-            //TODO: isto deveria ser um cadastro de usuário em outro BC???
-
-            var aluno = new Aluno(Guid.NewGuid(), request.Nome, request.Email);
-            return await _alunoService.CadastrarAlunoAsync(aluno);
         }
 
         public async Task<SituacaoMatricula> Handle(AtivarMatriculaCommand request, CancellationToken cancellationToken)

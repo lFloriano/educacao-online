@@ -11,7 +11,8 @@ namespace EducacaoOnline.Conteudo.Application.Handlers
         IRequestHandler<ObterResumoCursoQuery, CursoResumoDto?>,
         IRequestHandler<ObterCursoPorIdQuery, CursoDto?>,
         IRequestHandler<ObterTodosOsCursosQuery, IEnumerable<CursoDto>>,
-        IRequestHandler<ObterAulasPorCursoIdQuery, IEnumerable<AulaDto?>>
+        IRequestHandler<ObterAulasPorCursoIdQuery, IEnumerable<AulaDto?>>,
+        IRequestHandler<AulaPertenceAoCursoQuery, bool>
     {
         private readonly ICursoRepository _cursoRepository;
         private readonly IMapper _mapper;
@@ -52,6 +53,16 @@ namespace EducacaoOnline.Conteudo.Application.Handlers
         {
             var aulas = await _cursoRepository.ObterAulasPorCursoIdAsync(request.CursoId);
             return _mapper.Map<IEnumerable<AulaDto>>(aulas);
+        }
+
+        public async Task<bool> Handle(AulaPertenceAoCursoQuery request, CancellationToken cancellationToken)
+        {
+            var curso = await _cursoRepository.ObterPorIdAsync(request.CursoId);
+
+            if (curso == null)
+                return false;
+
+            return curso.Aulas.Any(x => x.Id == request.AulaId);
         }
     }
 }

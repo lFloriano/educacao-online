@@ -43,18 +43,26 @@ namespace EducacaoOnline.Api.Controllers
         public async Task<IActionResult> ObterPorEmail(string email)
         {
             var aluno = await _mediatorHandler.EnviarComando(new ObterAlunoPorEmailQuery(email));
+
+            if (aluno == null)
+                return NotFound("Aluno não encontrado");
+
             return Ok(aluno);
         }
 
 
-        [HttpGet("{alunoId:guid}/cursos")]
+        [HttpGet("{alunoId:guid}/matriculas")]
         [ProducesResponseType(typeof(IEnumerable<Guid>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ObterCursosMatriculados(Guid alunoId)
+        public async Task<IActionResult> ObterMatriculas(Guid alunoId)
         {
-            var cursos = await _mediatorHandler.EnviarComando(new ObterCursosMatriculadosQuery(alunoId));
-            return Ok(cursos ?? new Guid[] { });
+            var matriculas = await _mediatorHandler.EnviarComando(new ObterMatriculasQuery(alunoId));
+
+            if (matriculas == null || !matriculas.Any())
+                return NoContent();
+
+            return Ok(matriculas);
         }
 
 
@@ -71,20 +79,14 @@ namespace EducacaoOnline.Api.Controllers
             return Created();
         }
 
-        [HttpPost("{alunoId:guid}/cursos/{cursoId:guid}/aulas")]
+        [HttpPost("{alunoId:guid}/cursos/{cursoId:guid}/aulas/{aulaId:guid}/realizar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RealizarAula(Guid alunoId, Guid cursoId, [FromBody] AulaRequest request)
+        public async Task<IActionResult> RealizarAula(Guid alunoId, Guid cursoId, Guid aulaId)
         {
-            if (alunoId != request.AlunoId)
-                return BadRequest("O AlunoId da url não corresponde ao AlunoId no payload");
-
-            if (cursoId != request.CursoId)
-                return BadRequest("O CursoId da url não corresponde ao CursoId no payload");
-
-            var resultado = await _mediatorHandler.EnviarComando(new RealizarAulaCommand(alunoId, cursoId, request.AulaId));
-            return Ok(resultado);
+            var resultado = await _mediatorHandler.EnviarComando(new RealizarAulaCommand(alunoId, cursoId, aulaId));
+            return Ok();
         }
 
 
@@ -94,18 +96,8 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> FinalizarCurso(Guid alunoId, Guid cursoId)
         {
-            SituacaoMatricula situacao = await _mediatorHandler.EnviarComando(new FinalizarCursoCommand(alunoId, cursoId));
-            return Ok(situacao);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CadastrarAluno([FromBody] CadastrarAlunoRequest aluno)
-        {
-            var id = await _mediatorHandler.EnviarComando(new CadastrarAlunoCommand(aluno.Nome, aluno.Email, aluno.ConfirmacaoEmail));
-            return Created();
+            var situacao = await _mediatorHandler.EnviarComando(new FinalizarCursoCommand(alunoId, cursoId));
+            return Ok();
         }
     }
 }

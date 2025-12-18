@@ -47,12 +47,11 @@ namespace EducacaoOnline.Api.Configurations
             services.AddScoped<IAlunoRepository, AlunoRepository>();
             services.AddScoped<IAlunoService, AlunoService>();
             services.AddScoped<IRequestHandler<ObterAlunoResumoQuery, AlunoResumoDto?>, AlunosQueryHandler>();
-            services.AddScoped<IRequestHandler<CadastrarAlunoCommand, Guid>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<MatricularAlunoCommand, MatriculaCriadaDto>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<AtivarMatriculaCommand, SituacaoMatricula>, AlunosCommandHandler>();
-            services.AddScoped<IRequestHandler<RealizarAulaCommand, AulaConcluidaDto>, AlunosCommandHandler>();
+            services.AddScoped<IRequestHandler<RealizarAulaCommand, HistoricoAprendizadoDto>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<FinalizarCursoCommand, SituacaoMatricula>, AlunosCommandHandler>();
-            services.AddScoped<IRequestHandler<ObterCursosMatriculadosQuery, IEnumerable<Guid>>, AlunosQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterMatriculasQuery, IEnumerable<MatriculaDto>>, AlunosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterAlunoPorIdQuery, AlunoDto?>, AlunosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterAlunoPorEmailQuery, AlunoDto?>, AlunosQueryHandler>();
 
@@ -65,6 +64,7 @@ namespace EducacaoOnline.Api.Configurations
             services.AddScoped<IRequestHandler<ObterAulasPorCursoIdQuery, IEnumerable<AulaDto?>>, CursosQueryHandler>();
             services.AddScoped<IRequestHandler<CadastrarCursoCommand, CursoDto>, CursosCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarAulaCommand, AulaDto>, CursosCommandHandler>();
+            services.AddScoped<IRequestHandler<AulaPertenceAoCursoQuery, bool>, CursosQueryHandler>();
 
             //BC Pagamento
             services.AddScoped<IPagamentoRepository, PagamentoRepository>();

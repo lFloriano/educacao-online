@@ -10,7 +10,7 @@ using MediatR;
 namespace EducacaoOnline.Alunos.Application.Handlers
 {
     public class AlunosQueryHandler :
-        IRequestHandler<ObterCursosMatriculadosQuery, IEnumerable<Guid>>,
+        IRequestHandler<ObterMatriculasQuery, IEnumerable<MatriculaDto>>,
         IRequestHandler<ObterAlunoPorIdQuery, AlunoDto?>,
         IRequestHandler<ObterAlunoPorEmailQuery, AlunoDto?>,
         IRequestHandler<ObterAlunoResumoQuery, AlunoResumoDto?>
@@ -24,14 +24,14 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Guid>> Handle(ObterCursosMatriculadosQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<MatriculaDto>> Handle(ObterMatriculasQuery request, CancellationToken cancellationToken)
         {
             var aluno = await _alunoService.ObterPorIdAsync(request.alunoId);
 
             if (aluno == null)
                 throw new NotFoundException(nameof(Aluno), request.alunoId);
 
-            return aluno.ObterCursosMatriculados();
+            return _mapper.Map<IEnumerable<MatriculaDto>>(aluno.Matriculas);
         }
 
         public async Task<AlunoDto?> Handle(ObterAlunoPorIdQuery request, CancellationToken cancellationToken)

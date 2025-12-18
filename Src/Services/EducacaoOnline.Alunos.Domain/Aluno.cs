@@ -97,7 +97,7 @@ namespace EducacaoOnline.Alunos.Domain
                 .Select(x => x.CursoId);
         }
 
-        public int ObterTaxaDeConclusaoDeCursos()   //TODO: rever este método. Não é melhor ver a taxa de conclusao de aulas num curso?
+        public int ObterTaxaDeConclusaoDeCursos()
         {
             var numeroCursosMatriculados = Matriculas.Count;
 

@@ -4,7 +4,8 @@
     {
         public Guid Id { get; set; }
         public string Nome { get; set; } = string.Empty;
-
-        //TODO: add demais propriedades
+        public string Email { get; set; } = string.Empty;
+        public DateTime DataCadastro { get; set; }
+        public IEnumerable<MatriculaDto> Matriculas { get; set; } = Enumerable.Empty<MatriculaDto>();
     }
 }

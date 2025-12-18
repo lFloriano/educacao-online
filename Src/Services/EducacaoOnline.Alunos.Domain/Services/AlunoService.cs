@@ -70,13 +70,13 @@ namespace EducacaoOnline.Alunos.Domain.Services
             var aluno = await _alunoRepository.ObterPorIdAsync(alunoId)
                 ?? throw new InvalidOperationException("Aluno não encontrado.");
 
-            var aulaConcluida = aluno.RealizarAula(aulaId, cursoId);
+            var historicoAprendizado = aluno.RealizarAula(aulaId, cursoId);
             _alunoRepository.Atualizar(aluno);
 
             if (!await _alunoRepository.UnitOfWork.Commit())
                 throw new DbUpdateException("Falha ao persistir a conclusão da aula.");
 
-            return aulaConcluida;
+            return historicoAprendizado;
         }
 
         public async Task<Matricula> FinalizarCursoAsync(Guid alunoId, Guid cursoId)
@@ -85,7 +85,8 @@ namespace EducacaoOnline.Alunos.Domain.Services
                 ?? throw new InvalidOperationException("Aluno não encontrado.");
 
             var matricula = aluno.FinalizarCurso(cursoId);
-            _alunoRepository.Atualizar(aluno);
+            _alunoRepository.AtualizarMatricula(matricula);
+            _alunoRepository.AdicionarCertificado(matricula.Certificado);
 
             if (!await _alunoRepository.UnitOfWork.Commit())
                 throw new DbUpdateException("Falha ao persistir a finalização do curso.");

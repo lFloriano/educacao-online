@@ -8,5 +8,6 @@ namespace EducacaoOnline.Alunos.Domain.Repositories
         Task<Aluno?> ObterPorEmailAsync(string email);
         void AdicionarMatricula(Matricula matricula);
         void AtualizarMatricula(Matricula matricula);
+        void AdicionarCertificado(Certificado certificado);
     }
 }

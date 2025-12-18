@@ -40,5 +40,10 @@ namespace EducacaoOnline.Alunos.Data.Repositories
         {
             _context.Update(matricula);
         }
+
+        public void AdicionarCertificado(Certificado certificado)
+        {
+            _context.Add(certificado);
+        }
     }
 }
