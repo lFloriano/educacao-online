@@ -1,11 +1,11 @@
 using EducacaoOnline.Alunos.Application.Commands;
 using EducacaoOnline.Alunos.Application.Dtos;
 using EducacaoOnline.Alunos.Application.Queries;
-using EducacaoOnline.Alunos.Domain.Enums;
 using EducacaoOnline.Api.Models.Alunos;
 using EducacaoOnline.Core.Communication.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace EducacaoOnline.Api.Controllers
 {
@@ -25,6 +25,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(typeof(AlunoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obtém aluno por id")]
         public async Task<IActionResult> ObterPorId(Guid id)
         {
             var aluno = await _mediatorHandler.EnviarComando(new ObterAlunoPorIdQuery(id));
@@ -40,6 +41,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(typeof(AlunoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obtém aluno por email")]
         public async Task<IActionResult> ObterPorEmail(string email)
         {
             var aluno = await _mediatorHandler.EnviarComando(new ObterAlunoPorEmailQuery(email));
@@ -55,6 +57,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Guid>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obtém as matrículas do aluno")]
         public async Task<IActionResult> ObterMatriculas(Guid alunoId)
         {
             var matriculas = await _mediatorHandler.EnviarComando(new ObterMatriculasQuery(alunoId));
@@ -70,6 +73,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Realiza matrícula do aluno num curso")]
         public async Task<IActionResult> MatricularAluno(Guid alunoId, [FromBody] CursoRequest request)
         {
             if (alunoId != request.AlunoId)
@@ -83,6 +87,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Permite que o aluno realize as aulas do curso")]
         public async Task<IActionResult> RealizarAula(Guid alunoId, Guid cursoId, Guid aulaId)
         {
             var resultado = await _mediatorHandler.EnviarComando(new RealizarAulaCommand(alunoId, cursoId, aulaId));
@@ -94,6 +99,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Permite que o aluno finalize o curso após realização de todas as aulas")]
         public async Task<IActionResult> FinalizarCurso(Guid alunoId, Guid cursoId)
         {
             var situacao = await _mediatorHandler.EnviarComando(new FinalizarCursoCommand(alunoId, cursoId));

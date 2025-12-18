@@ -22,7 +22,7 @@ namespace EducacaoOnline.Api.Configurations
                     Scheme = "bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description = "Autorização JWT. Cole o token no campo a seguir",
                     Reference = new OpenApiReference
                     {
                         Type = ReferenceType.SecurityScheme,
@@ -36,6 +36,8 @@ namespace EducacaoOnline.Api.Configurations
                     {
                         { bearerScheme, Array.Empty<string>() }
                     });
+
+                options.EnableAnnotations();
             });
         }
 

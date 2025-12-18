@@ -6,6 +6,7 @@ using EducacaoOnline.PagamentoFaturamento.Application.Dtos;
 using EducacaoOnline.PagamentoFaturamento.Application.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace EducacaoOnline.Api.Controllers
 {
@@ -26,6 +27,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Realiza o pagamento do curso e ativa a matrícula do aluno")]
         public async Task<IActionResult> RealizarPagamento([FromRoute] Guid cursoId, [FromRoute] Guid alunoId, [FromBody] PagamentoRequest pagamento)
         {
             if (cursoId != pagamento.CursoId)
@@ -44,6 +46,7 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obtém os pagamentos realizados pelo aluno")]
         public async Task<IActionResult> ObterPagamentos(Guid alunoId)
         {
             var pagamentos = await _mediatorHandler.EnviarComando(new ObterPagamentosPorAlunoIdQuery(alunoId));
