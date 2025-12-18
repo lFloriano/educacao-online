@@ -1,6 +1,6 @@
 ﻿using EducacaoOnline.Alunos.Application.Queries;
+using EducacaoOnline.Core.AntiCorruption.Gateways;
 using EducacaoOnline.Core.Communication.Dtos;
-using EducacaoOnline.Core.Communication.Gateways;
 using EducacaoOnline.Core.Communication.Mediator;
 
 namespace EducacaoOnline.Api.Adapters

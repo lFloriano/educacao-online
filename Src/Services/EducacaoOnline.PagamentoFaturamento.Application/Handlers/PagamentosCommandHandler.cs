@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EducacaoOnline.Core.Communication.Gateways;
+using EducacaoOnline.Core.AntiCorruption.Gateways;
 using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.PagamentoFaturamento.Application.Commands;
 using EducacaoOnline.PagamentoFaturamento.Domain;

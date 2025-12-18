@@ -22,6 +22,7 @@
     <ProjectReference Include="..\EducacaoOnline.Alunos.Application\EducacaoOnline.Alunos.Application.csproj" />
     <ProjectReference Include="..\EducacaoOnline.Alunos.Data\EducacaoOnline.Alunos.Data.csproj" />
     <ProjectReference Include="..\EducacaoOnline.Conteudo.Application\EducacaoOnline.Conteudo.Application.csproj" />
+    <ProjectReference Include="..\EducacaoOnline.Core.AntiCorruption\EducacaoOnline.Core.AntiCorruption.csproj" />
     <ProjectReference Include="..\EducacaoOnline.Core\EducacaoOnline.Core.csproj" />
     <ProjectReference Include="..\EducacaoOnline.PagamentoFaturamento.Application\EducacaoOnline.PagamentoFaturamento.Application.csproj" />
     <ProjectReference Include="..\EducacaoOnline.PagamentoFaturamento.Data\EducacaoOnline.PagamentoFaturamento.Data.csproj" />

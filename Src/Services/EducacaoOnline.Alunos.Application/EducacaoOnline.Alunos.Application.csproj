@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EducacaoOnline.Alunos.Domain\EducacaoOnline.Alunos.Domain.csproj" />
+    <ProjectReference Include="..\EducacaoOnline.Core.AntiCorruption\EducacaoOnline.Core.AntiCorruption.csproj" />
   </ItemGroup>
 
   <ItemGroup>

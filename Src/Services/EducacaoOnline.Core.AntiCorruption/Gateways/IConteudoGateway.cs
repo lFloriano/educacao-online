@@ -1,6 +1,6 @@
 ﻿using EducacaoOnline.Core.Communication.Dtos;
 
-namespace EducacaoOnline.Core.Communication.Gateways
+namespace EducacaoOnline.Core.AntiCorruption.Gateways
 {
     public interface IConteudoGateway
     {

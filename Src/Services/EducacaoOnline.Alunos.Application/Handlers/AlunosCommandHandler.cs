@@ -3,7 +3,7 @@ using EducacaoOnline.Alunos.Application.Commands;
 using EducacaoOnline.Alunos.Application.Dtos;
 using EducacaoOnline.Alunos.Domain.Enums;
 using EducacaoOnline.Alunos.Domain.Services;
-using EducacaoOnline.Core.Communication.Gateways;
+using EducacaoOnline.Core.AntiCorruption.Gateways;
 using EducacaoOnline.Core.DomainObjects;
 using MediatR;
 

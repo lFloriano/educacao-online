@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EducacaoOnline.Core.AntiCorruption\EducacaoOnline.Core.AntiCorruption.csproj" />
     <ProjectReference Include="..\EducacaoOnline.PagamentoFaturamento.Domain\EducacaoOnline.PagamentoFaturamento.Domain.csproj" />
   </ItemGroup>
 
