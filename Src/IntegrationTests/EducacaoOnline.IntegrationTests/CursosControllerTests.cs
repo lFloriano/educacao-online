@@ -1,6 +1,9 @@
 ﻿using EducacaoOnline.Api.Models.Cursos;
+using EducacaoOnline.Conteudo.Application.Dtos;
 using EducacaoOnline.IntegrationTests.Factories;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace EducacaoOnline.IntegrationTests
@@ -44,6 +47,41 @@ namespace EducacaoOnline.IntegrationTests
 
             //assert
             response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task AdminCadastraAulaComSucesso()
+        {
+            //arrange
+            var cursoVm = new CadastrarCursoVm()
+            {
+                Nome = "Introdução à Filosofia",
+                Descricao = "Curso rápido de filosofia",
+                Valor = 50,
+                MaterialDidatico = "Apostilas disponiveis em: https://www.curso-filosofia.com.br/material",
+                NumeroAulas = 2
+            };
+
+            //act
+            var cursoResponse = await _httpClient.PostAsJsonAsync("/api/cursos", cursoVm);
+            cursoResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+            var curso = await cursoResponse.Content.ReadFromJsonAsync<CursoDto>();
+
+            curso.Should().NotBeNull();
+            curso.Id.Should().NotBeEmpty();
+
+            var aulaVm = new CadastrarAulaVm()
+            {
+                CursoId = curso.Id,
+                Titulo = "Escritos Aristotélicos"
+            };
+
+            var aulaResponse = await _httpClient.PostAsJsonAsync($"api/cursos/{curso.Id.ToString()}/aulas", aulaVm);
+            var aula = await aulaResponse.Content.ReadFromJsonAsync<AulaDto>();
+
+            aula.Should().NotBeNull();
+            aula.Id.Should().NotBeEmpty();
+            aula.Titulo.Should().Be("Escritos Aristotélicos");
         }
     }
 }

@@ -70,8 +70,8 @@ namespace EducacaoOnline.Api.Controllers
         [SwaggerOperation(Summary = "Realiza o cadastro de um novo curso")]
         public async Task<IActionResult> CadastrarCurso([FromBody] CadastrarCursoVm curso)
         {
-            var id = await _mediatorHandler.EnviarComando(new CadastrarCursoCommand(curso.Nome, curso.Descricao, curso.NumeroAulas, curso.MaterialDidatico, curso.Valor));
-            return Created();
+            var cursoCriado = await _mediatorHandler.EnviarComando(new CadastrarCursoCommand(curso.Nome, curso.Descricao, curso.NumeroAulas, curso.MaterialDidatico, curso.Valor));
+            return CreatedAtAction(nameof(ObterPorId), new { id = cursoCriado.Id }, cursoCriado);
         }
 
         [HttpPost("{cursoId:guid}/aulas")]
@@ -85,8 +85,8 @@ namespace EducacaoOnline.Api.Controllers
             if (cursoId != aula.CursoId)
                 return BadRequest("O CursoId da url não corresponde ao CursoId no payload");
 
-            var id = await _mediatorHandler.EnviarComando(new CadastrarAulaCommand(aula.CursoId, aula.Titulo));
-            return Created();
+            var aulaCriada = await _mediatorHandler.EnviarComando(new CadastrarAulaCommand(aula.CursoId, aula.Titulo));
+            return CreatedAtAction("", aulaCriada);
         }
     }
 }
