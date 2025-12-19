@@ -11,13 +11,14 @@ namespace EducacaoOnline.IntegrationTests
     public class CursosControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         readonly HttpClient _httpClient;
+
         public CursosControllerTests()
         {
             var factory = new CustomWebApplicationFactory();
             _httpClient = factory.CreateClient();
         }
 
-        [Fact()]
+        [Fact]
         public async Task ObterTodosOsCursosDeveRetornarSucesso()
         {
             //arrange

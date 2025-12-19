@@ -24,7 +24,7 @@ namespace EducacaoOnline.Alunos.Domain.Services
             return await _alunoRepository.ObterPorEmailAsync(email);
         }
 
-        public async Task<Guid> CadastrarAlunoAsync(Aluno aluno)
+        public async Task<Aluno> CadastrarAlunoAsync(Aluno aluno)
         {
             if (aluno == null)
                 throw new ArgumentNullException(nameof(aluno));
@@ -34,7 +34,7 @@ namespace EducacaoOnline.Alunos.Domain.Services
             if (!await _alunoRepository.UnitOfWork.Commit())
                 throw new DbUpdateException("Falha ao persistir o aluno.");
 
-            return aluno.Id;
+            return aluno;
         }
 
         public async Task<Matricula> MatricularAsync(Guid alunoId, Guid cursoId)

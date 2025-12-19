@@ -21,7 +21,7 @@ namespace EducacaoOnline.Alunos.Domain.Services
         /// <summary>
         /// Cria/Adiciona um novo aluno no sistema.
         /// </summary>
-        Task<Guid> CadastrarAlunoAsync(Aluno aluno);
+        Task<Aluno> CadastrarAlunoAsync(Aluno aluno);
 
         /// <summary>
         /// Matricula um aluno em um curso.

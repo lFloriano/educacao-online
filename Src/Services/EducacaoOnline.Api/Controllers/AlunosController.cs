@@ -74,13 +74,13 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [SwaggerOperation(Summary = "Realiza matrícula do aluno num curso")]
-        public async Task<IActionResult> MatricularAluno(Guid alunoId, [FromBody] CursoRequest request)
+        public async Task<IActionResult> MatricularAluno(Guid alunoId, [FromBody] NovaMatriculaRequest request)
         {
             if (alunoId != request.AlunoId)
                 return BadRequest("O AlunoId da url não corresponde ao AlunoId no payload");
 
             var matricula = await _mediatorHandler.EnviarComando(new MatricularAlunoCommand(alunoId, request.CursoId));
-            return Created();
+            return Ok(matricula);
         }
 
         [HttpPost("{alunoId:guid}/cursos/{cursoId:guid}/aulas/{aulaId:guid}/realizar")]

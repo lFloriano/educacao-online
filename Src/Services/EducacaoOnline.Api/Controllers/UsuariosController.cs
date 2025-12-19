@@ -1,4 +1,6 @@
-﻿using EducacaoOnline.Alunos.Domain;
+﻿using AutoMapper;
+using EducacaoOnline.Alunos.Application.Dtos;
+using EducacaoOnline.Alunos.Domain;
 using EducacaoOnline.Alunos.Domain.Services;
 using EducacaoOnline.Api.Models.Alunos;
 using EducacaoOnline.Core.Enums;
@@ -22,12 +24,14 @@ namespace EducacaoOnline.Api.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAlunoService _alunoService;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public UsuariosController(UserManager<IdentityUser> userManager, IAlunoService alunoService, IConfiguration configuration)
+        public UsuariosController(UserManager<IdentityUser> userManager, IAlunoService alunoService, IConfiguration configuration, IMapper mapper)
         {
             _userManager = userManager;
             _alunoService = alunoService;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -46,9 +50,13 @@ namespace EducacaoOnline.Api.Controllers
 
             var novoUsuario = await AddUsuario(request);
             await AssociarUsuarioNaRole(novoUsuario);
-            await AddAluno(novoUsuario.Id.NormalizeGuid(), request);
+            var alunoCriado = await AddAluno(novoUsuario.Id.NormalizeGuid(), request);
 
-            return Created();
+            return CreatedAtAction(
+                actionName: nameof(AlunosController.ObterPorId),
+                controllerName: "Alunos",
+                routeValues: new { id = alunoCriado.Id },
+                value: alunoCriado);
         }
 
         [HttpPost("login")]
@@ -107,10 +115,10 @@ namespace EducacaoOnline.Api.Controllers
             }
         }
 
-        private async Task AddAluno(Guid id, CadastrarAlunoRequest request)
+        private async Task<AlunoDto> AddAluno(Guid id, CadastrarAlunoRequest request)
         {
-            var aluno = new Aluno(id, request.Nome, request.Email);
-            await _alunoService.CadastrarAlunoAsync(aluno);
+            var alunoCriado = await _alunoService.CadastrarAlunoAsync(new Aluno(id, request.Nome, request.Email));
+            return _mapper.Map<AlunoDto>(alunoCriado);
         }
 
         private string ObterDescricaoErros(IdentityResult identityResult)
