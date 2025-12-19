@@ -10,7 +10,14 @@ namespace EducacaoOnline.Api.Configurations
             services
                 .AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<UsuariosDbContext>();
+                .AddEntityFrameworkStores<UsuariosDbContext>()
+                .AddDefaultTokenProviders();
+
+            // policy opcional para usar [Authorize(Policy = "Administrador")]
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
+            });
         }
     }
 }

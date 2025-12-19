@@ -69,12 +69,7 @@ namespace EducacaoOnline.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var aluno = await _alunoService.ObterPorEmailAsync(request.Email);
-
-            if (aluno == null)
-                return Unauthorized("Credencias inválidas");
-
-            var token = await ObterUsuario(request);
+            var token = await ObterTokenUsuario(request);
 
             if (String.IsNullOrEmpty(token))
                 return BadRequest("Erro ao gerar token para o usuário");
@@ -127,7 +122,7 @@ namespace EducacaoOnline.Api.Controllers
             return string.Join(", ", erros);
         }
 
-        private async Task<string> ObterUsuario(LoginRequest login)
+        private async Task<string> ObterTokenUsuario(LoginRequest login)
         {
             var usuario = await _userManager.FindByEmailAsync(login.Email) ??
                 throw new InvalidOperationException("Email ou senha inválidos");
@@ -137,20 +132,23 @@ namespace EducacaoOnline.Api.Controllers
             if (!senhaEhValida)
                 throw new InvalidOperationException("Email ou senha inválidos");
 
-            var aluno = await _alunoService.ObterPorEmailAsync(login.Email) ??
-                throw new InvalidOperationException($"Aluno não encontrado na base com o email {login.Email}");
-
-            return GerarJwt(usuario, aluno);
+            return await GerarJwt(usuario);
         }
 
-        private string GerarJwt(IdentityUser usuario, Aluno aluno)
+        private async Task<string> GerarJwt(IdentityUser usuario)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id),
                 new Claim(ClaimTypes.Email, usuario.Email),
-                new Claim(ClaimTypes.Name, aluno?.Nome?? usuario?.UserName)
+                new Claim(ClaimTypes.Name, usuario?.UserName)
             };
+
+            var roles = await _userManager.GetRolesAsync(usuario);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

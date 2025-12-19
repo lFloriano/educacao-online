@@ -70,7 +70,7 @@ namespace EducacaoOnline.Api.Configurations.Seeder
             if (resultadoCriacao.Succeeded)
             {
                 userManager
-                    .AddToRoleAsync(novoAdmin, TipoUsuario.Administrador.ToString().ToUpper())
+                    .AddToRoleAsync(novoAdmin, TipoUsuario.Administrador.GetDescription().ToUpper())
                     .GetAwaiter()
                     .GetResult();
             }
