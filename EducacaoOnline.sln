@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoFat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.Core.AntiCorruption", "Src\Services\EducacaoOnline.Core.AntiCorruption\EducacaoOnline.Core.AntiCorruption.csproj", "{49EC83DB-8769-492B-B160-BDDD002FB7D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{3D4AF020-8146-406F-8BC0-AF9831D37D22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.IntegrationTests", "Src\IntegrationTests\EducacaoOnline.IntegrationTests\EducacaoOnline.IntegrationTests.csproj", "{838D2400-6AD1-48D7-AC25-BA76B8A805B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +105,10 @@ Global
 		{49EC83DB-8769-492B-B160-BDDD002FB7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49EC83DB-8769-492B-B160-BDDD002FB7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49EC83DB-8769-492B-B160-BDDD002FB7D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838D2400-6AD1-48D7-AC25-BA76B8A805B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838D2400-6AD1-48D7-AC25-BA76B8A805B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838D2400-6AD1-48D7-AC25-BA76B8A805B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838D2400-6AD1-48D7-AC25-BA76B8A805B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +132,7 @@ Global
 		{71994B95-365B-49BF-8D3D-E30B07CB1C3B} = {62767F43-DC73-4B03-980F-E81561B6F4ED}
 		{062EE32A-C5A4-40F5-A5EB-2BC81C83A4CC} = {62767F43-DC73-4B03-980F-E81561B6F4ED}
 		{49EC83DB-8769-492B-B160-BDDD002FB7D6} = {9A22E7CD-0AA4-495C-B48F-0D5F50555B1D}
+		{838D2400-6AD1-48D7-AC25-BA76B8A805B8} = {3D4AF020-8146-406F-8BC0-AF9831D37D22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69DD8B62-0D76-4762-9F98-C60631CB4467}

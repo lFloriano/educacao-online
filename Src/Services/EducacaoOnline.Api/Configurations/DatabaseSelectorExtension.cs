@@ -33,6 +33,10 @@ public static partial class DatabaseSelectorExtension
                    options.UseSqlite(builder.Configuration.GetConnectionString("GestaoUsuariosConnectionLite"))
             );
         }
+        else if (builder.Environment.IsEnvironment("Testing"))
+        {
+
+        }
         else
         {
             builder.Services.AddDbContext<AlunosDbContext>(options =>
@@ -41,12 +45,12 @@ public static partial class DatabaseSelectorExtension
 
             builder.Services.AddDbContext<CursosDbContext>(options =>
                 options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-                       .UseSqlite(builder.Configuration.GetConnectionString("GestaoConteudoConnection"))
+                       .UseSqlServer(builder.Configuration.GetConnectionString("GestaoConteudoConnection"))
             );
 
             builder.Services.AddDbContext<PagamentosDbContext>(options =>
                 options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-                       .UseSqlite(builder.Configuration.GetConnectionString("GestaoFaturamentoConnection"))
+                       .UseSqlServer(builder.Configuration.GetConnectionString("GestaoFaturamentoConnection"))
             );
 
             builder.Services.AddDbContext<UsuariosDbContext>(options =>
@@ -66,6 +70,22 @@ public static partial class DatabaseSelectorExtension
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             AplicarMigrations(alunosDbContext, cursosDbContext, pagamentosDbContext, usuariosDbContext);
+            SeederUsuarios.Seed(usuariosDbContext, userManager);
+            SeederConteudo.Seed(cursosDbContext);
+            SeederAlunos.Seed(alunosDbContext);
+        }
+    }
+
+    public static void UseSeed(this WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var alunosDbContext = scope.ServiceProvider.GetRequiredService<AlunosDbContext>();
+            var cursosDbContext = scope.ServiceProvider.GetRequiredService<CursosDbContext>();
+            var pagamentosDbContext = scope.ServiceProvider.GetRequiredService<PagamentosDbContext>();
+            var usuariosDbContext = scope.ServiceProvider.GetRequiredService<UsuariosDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
             SeederUsuarios.Seed(usuariosDbContext, userManager);
             SeederConteudo.Seed(cursosDbContext);
             SeederAlunos.Seed(alunosDbContext);

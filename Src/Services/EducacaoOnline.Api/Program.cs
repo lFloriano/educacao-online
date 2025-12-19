@@ -22,6 +22,10 @@ if (app.Environment.IsDevelopment())
     app.UsarSwagger();
     app.UseMigrationsAndSeed();
 }
+else if (app.Environment.IsEnvironment("Testing"))
+{
+    app.UseSeed();
+}
 
 app.UseHttpsRedirection();
 
@@ -32,3 +36,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
