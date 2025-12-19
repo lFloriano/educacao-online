@@ -57,6 +57,9 @@ A estrutura do projeto é organizada da seguinte forma:
     - EducacaoOnline.PagamentoFaturamento.Data/ - Modelos de Dados e Configuração do EF Core
     - EducacaoOnline.PagamentoFaturamento.Domain/ - Camada de domínio para o BC de gestão de Pagamento e Faturamento
     - EducacaoOnline.PagamentoFaturamento.Tests/ - Projeto de testes de unidade para o BC de Pagamento e Faturamento
+
+  - IntegrationTests
+    - EducacaoOnline.IntegrationTests/ - Testes de integração dos principais casos de uso do sistema
     
 - README.md - Arquivo de Documentação do Projeto
 - FEEDBACK.md - Arquivo para Consolidação dos Feedbacks
