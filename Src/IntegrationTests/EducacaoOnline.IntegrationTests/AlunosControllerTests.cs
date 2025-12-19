@@ -242,6 +242,12 @@ namespace EducacaoOnline.IntegrationTests
 
             #region finalizacao do curso
             var cursoFinalizadoResponse = await _httpClient.PostAsync($"api/alunos/{aluno.Id}/cursos/{curso.Id}/finalizar", null);
+            var certificado = await cursoFinalizadoResponse.Content.ReadFromJsonAsync<CertificadoDto>();
+
+            certificado.Should().NotBeNull();
+            certificado.MatriculaId.Should().Be(matricula.Id);
+            certificado.DataCadastro.Date.Should().Be(DateTime.Now.Date);
+
             cursoFinalizadoResponse.EnsureSuccessStatusCode();
             #endregion
         }

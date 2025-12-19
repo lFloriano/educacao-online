@@ -7,13 +7,8 @@ using EducacaoOnline.Conteudo.Application.Dtos;
 using EducacaoOnline.IntegrationTests.Factories;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducacaoOnline.IntegrationTests
 {
