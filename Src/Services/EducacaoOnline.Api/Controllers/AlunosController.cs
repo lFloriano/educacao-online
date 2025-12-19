@@ -102,8 +102,8 @@ namespace EducacaoOnline.Api.Controllers
         [SwaggerOperation(Summary = "Permite que o aluno finalize o curso após realização de todas as aulas")]
         public async Task<IActionResult> FinalizarCurso(Guid alunoId, Guid cursoId)
         {
-            var situacao = await _mediatorHandler.EnviarComando(new FinalizarCursoCommand(alunoId, cursoId));
-            return Ok();
+            var certificado = await _mediatorHandler.EnviarComando(new FinalizarCursoCommand(alunoId, cursoId));
+            return Ok(certificado);
         }
     }
 }

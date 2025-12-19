@@ -14,6 +14,7 @@ namespace EducacaoOnline.Alunos.Application.Mappings
             CreateMap<Matricula, MatriculaCriadaDto>();
             CreateMap<Matricula, MatriculaDto>();
             CreateMap<HistoricoAprendizado, HistoricoAprendizadoDto>();
+            CreateMap<Certificado, CertificadoDto>();
         }
     }
 }

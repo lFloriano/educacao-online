@@ -13,7 +13,7 @@ namespace EducacaoOnline.Alunos.Application.Handlers
         IRequestHandler<MatricularAlunoCommand, MatriculaCriadaDto>,
         IRequestHandler<AtivarMatriculaCommand, SituacaoMatricula>,
         IRequestHandler<RealizarAulaCommand, HistoricoAprendizadoDto>,
-        IRequestHandler<FinalizarCursoCommand, SituacaoMatricula>
+        IRequestHandler<FinalizarCursoCommand, CertificadoDto>
     {
         private readonly IAlunoService _alunoService;
         private readonly IMapper _mapper;
@@ -51,7 +51,7 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             return _mapper.Map<HistoricoAprendizadoDto>(historicoAprendizado);
         }
 
-        public async Task<SituacaoMatricula> Handle(FinalizarCursoCommand request, CancellationToken cancellationToken)
+        public async Task<CertificadoDto> Handle(FinalizarCursoCommand request, CancellationToken cancellationToken)
         {
             var aluno = await _alunoService.ObterPorIdAsync(request.AlunoId)
                 ?? throw new InvalidOperationException("Aluno não encontrado.");
@@ -68,7 +68,8 @@ namespace EducacaoOnline.Alunos.Application.Handlers
                 throw new InvalidOperationException("Aluno não concluiu todas as aulas do curso.");
 
             var matriculaFinalizada = await _alunoService.FinalizarCursoAsync(request.AlunoId, request.CursoId);
-            return matricula.Situacao;
+
+            return _mapper.Map<CertificadoDto>(matriculaFinalizada.Certificado);
         }
 
         public async Task<SituacaoMatricula> Handle(AtivarMatriculaCommand request, CancellationToken cancellationToken)

@@ -51,7 +51,7 @@ namespace EducacaoOnline.Api.Configurations
             services.AddScoped<IRequestHandler<MatricularAlunoCommand, MatriculaCriadaDto>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<AtivarMatriculaCommand, SituacaoMatricula>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<RealizarAulaCommand, HistoricoAprendizadoDto>, AlunosCommandHandler>();
-            services.AddScoped<IRequestHandler<FinalizarCursoCommand, SituacaoMatricula>, AlunosCommandHandler>();
+            services.AddScoped<IRequestHandler<FinalizarCursoCommand, CertificadoDto>, AlunosCommandHandler>();
             services.AddScoped<IRequestHandler<ObterMatriculasQuery, IEnumerable<MatriculaDto>>, AlunosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterAlunoPorIdQuery, AlunoDto?>, AlunosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterAlunoPorEmailQuery, AlunoDto?>, AlunosQueryHandler>();
