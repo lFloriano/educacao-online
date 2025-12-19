@@ -42,6 +42,7 @@ namespace EducacaoOnline.Api.Configurations
             // Communication
             services.AddScoped<IConteudoGateway, ConteudoGatewayAdapter>();
             services.AddScoped<IAlunosGateway, AlunosGatewayAdapter>();
+            services.AddScoped<ICartaoCreditoGateway, CartaoCreditoGatewayAdapter>();
 
             // BC Alunos
             services.AddScoped<IAlunoRepository, AlunoRepository>();

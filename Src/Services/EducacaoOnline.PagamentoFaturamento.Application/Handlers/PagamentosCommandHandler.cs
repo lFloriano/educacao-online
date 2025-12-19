@@ -15,17 +15,20 @@ namespace EducacaoOnline.PagamentoFaturamento.Application.Handlers
         private readonly IMapper _mapper;
         private readonly IConteudoGateway _conteudoGateway;
         private readonly IAlunosGateway _alunosGateway;
+        private readonly ICartaoCreditoGateway _cartaoCreditoGateway;
 
         public PagamentosCommandHandler(
             IPagamentoService pagamentoService,
             IMapper mapper,
             IConteudoGateway conteudoGateway,
-            IAlunosGateway alunosGateway)
+            IAlunosGateway alunosGateway,
+            ICartaoCreditoGateway cartaoCreditoGateway)
         {
             _pagamentoService = pagamentoService;
             _mapper = mapper;
             _conteudoGateway = conteudoGateway;
             _alunosGateway = alunosGateway;
+            _cartaoCreditoGateway = cartaoCreditoGateway;
         }
 
         public async Task<Guid> Handle(RealizarPagamentoCommand request, CancellationToken cancellationToken)
@@ -40,6 +43,11 @@ namespace EducacaoOnline.PagamentoFaturamento.Application.Handlers
 
             if (existePagamentoConfirmadoAnterior)
                 throw new InvalidOperationException("O aluno já realizou o pagamento deste curso");
+
+            var cartaoEhValido = await _cartaoCreditoGateway.ValidarCartao(request.CartaoTitular, request.CartaoNumero, request.CartaoCVV, request.CartaoValidade);
+
+            if (!cartaoEhValido)
+                throw new InvalidOperationException("Dados do cartão de crédito inválidos");
 
             var pagamento = new Pagamento(request.AlunoId, request.CursoId, curso.Valor, new DadosCartao(request.CartaoTitular, request.CartaoNumero, request.CartaoValidade, request.CartaoCVV));
             await _pagamentoService.RealizarPagamentoAsync(pagamento);
