@@ -54,7 +54,7 @@ namespace EducacaoOnline.Api.Controllers
 
 
         [HttpGet("{alunoId:guid}/matriculas")]
-        [ProducesResponseType(typeof(IEnumerable<Guid>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<MatriculaDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [SwaggerOperation(Summary = "Obtém as matrículas do aluno")]
