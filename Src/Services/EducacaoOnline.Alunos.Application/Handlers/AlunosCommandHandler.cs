@@ -11,7 +11,6 @@ namespace EducacaoOnline.Alunos.Application.Handlers
 {
     public class AlunosCommandHandler :
         IRequestHandler<MatricularAlunoCommand, MatriculaCriadaDto>,
-        IRequestHandler<AtivarMatriculaCommand, SituacaoMatricula>,
         IRequestHandler<RealizarAulaCommand, HistoricoAprendizadoDto>,
         IRequestHandler<FinalizarCursoCommand, CertificadoDto>
     {
@@ -70,14 +69,6 @@ namespace EducacaoOnline.Alunos.Application.Handlers
             var matriculaFinalizada = await _alunoService.FinalizarCursoAsync(request.AlunoId, request.CursoId);
 
             return _mapper.Map<CertificadoDto>(matriculaFinalizada.Certificado);
-        }
-
-        public async Task<SituacaoMatricula> Handle(AtivarMatriculaCommand request, CancellationToken cancellationToken)
-        {
-            var curso = await _conteudoGateway.ObterCursoAsync(request.CursoId)
-                ?? throw new NotFoundException("Curso", request.CursoId);
-
-            return (await _alunoService.AtivarMatriculaAsync(request.AlunoId, request.CursoId)).Situacao;
         }
     }
 }
