@@ -22,7 +22,7 @@ namespace EducacaoOnline.Api.Controllers
             _mediatorHandler = mediatorHandler;
         }
 
-        [HttpPost("/cursos/{cursoId:guid}/alunos/{alunoId:guid}")]
+        [HttpPost("cursos/{cursoId:guid}/alunos/{alunoId:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
