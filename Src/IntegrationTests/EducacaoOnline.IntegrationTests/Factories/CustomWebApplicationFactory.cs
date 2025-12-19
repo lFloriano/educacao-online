@@ -28,10 +28,7 @@ namespace EducacaoOnline.IntegrationTests.Factories
                 RemoverDbContexts(services);
                 CriarSqliteConnections();
                 AddDbContexts(services);
-
-                // garante criação do db schema
-                var sp = services.BuildServiceProvider();
-                GarantirCriacaoDosBancos(sp);
+                GarantirCriacaoDosBancos(services);
                 AddAutenticacao(services);
             });
         }
@@ -67,8 +64,9 @@ namespace EducacaoOnline.IntegrationTests.Factories
             services.AddDbContext<PagamentosDbContext>(opts => opts.UseSqlite(_connPagamentos));
         }
 
-        private void GarantirCriacaoDosBancos(ServiceProvider sp)
+        private void GarantirCriacaoDosBancos(IServiceCollection services)
         {
+            var sp = services.BuildServiceProvider();
             using var scope = sp.CreateScope();
             scope.ServiceProvider.GetRequiredService<AlunosDbContext>().Database.EnsureCreated();
             scope.ServiceProvider.GetRequiredService<CursosDbContext>().Database.EnsureCreated();
@@ -78,7 +76,13 @@ namespace EducacaoOnline.IntegrationTests.Factories
 
         private void AddAutenticacao(IServiceCollection services)
         {
-            services.AddAuthentication("Test").AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", _ => { });
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "Test";
+                    options.DefaultChallengeScheme = "Test";
+                })
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", _ => { });
         }
 
         protected override void Dispose(bool disposing)

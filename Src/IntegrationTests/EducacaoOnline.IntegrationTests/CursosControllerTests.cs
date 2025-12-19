@@ -1,12 +1,7 @@
-﻿using EducacaoOnline.IntegrationTests.Factories;
-using FluentAssertions;
+﻿using EducacaoOnline.Api.Models.Cursos;
+using EducacaoOnline.IntegrationTests.Factories;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Json;
 
 namespace EducacaoOnline.IntegrationTests
 {
@@ -20,7 +15,7 @@ namespace EducacaoOnline.IntegrationTests
         }
 
         [Fact()]
-        public async Task Get_ObterTodos_DeveRetornarSucesso()
+        public async Task ObterTodosOsCursosDeveRetornarSucesso()
         {
             //arrange
 
@@ -31,5 +26,24 @@ namespace EducacaoOnline.IntegrationTests
             response.EnsureSuccessStatusCode();
         }
 
+        [Fact]
+        public async Task AdminCadastraCursoComSucesso()
+        {
+            //arrange
+            var curso = new CadastrarCursoVm()
+            {
+                Nome = "Introdução à Filosofia",
+                Descricao = "Curso rápido de filosofia",
+                Valor = 50,
+                MaterialDidatico = "Apostilas disponiveis em: https://www.curso-filosofia.com.br/material",
+                NumeroAulas = 2
+            };
+
+            //act
+            var response = await _httpClient.PostAsJsonAsync("/api/cursos", curso);
+
+            //assert
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
