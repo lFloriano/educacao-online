@@ -62,6 +62,20 @@ namespace EducacaoOnline.Api.Controllers
             return Ok(aulas);
         }
 
+        [HttpGet("{cursoId:guid}/aulas/{aulaId:guid}")]
+        [ProducesResponseType(typeof(AulaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Obtém aula por id")]
+        public async Task<IActionResult> ObterAulaPorId([FromRoute] Guid cursoId)
+        {
+            var aula = await _mediatorHandler.EnviarComando(new ObterAulaPorIdQuery(cursoId));
+
+            if (aula == null)
+                return NotFound();
+
+            return Ok(aula);
+        }
+
         [HttpPost]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -86,7 +100,7 @@ namespace EducacaoOnline.Api.Controllers
                 return BadRequest("O CursoId da url não corresponde ao CursoId no payload");
 
             var aulaCriada = await _mediatorHandler.EnviarComando(new CadastrarAulaCommand(aula.CursoId, aula.Titulo));
-            return CreatedAtAction("", aulaCriada);
+            return CreatedAtAction(nameof(ObterAulaPorId), new { cursoId = cursoId, aulaId = aulaCriada.Id }, aulaCriada);
         }
     }
 }

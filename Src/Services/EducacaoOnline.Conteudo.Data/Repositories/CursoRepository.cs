@@ -34,6 +34,12 @@ namespace EducacaoOnline.Conteudo.Data.Repositories
             return curso?.Aulas;
         }
 
+        public async Task<Aula?> ObterAulaPorIdAsync(Guid id)
+        {
+            var aula = await ((CursosDbContext)_context).Aulas.FirstOrDefaultAsync(x => x.Id == id);
+            return aula;
+        }
+
         public void AdicionarAula(Aula aula)
         {
             _context.Add(aula);

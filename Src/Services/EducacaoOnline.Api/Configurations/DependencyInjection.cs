@@ -62,6 +62,7 @@ namespace EducacaoOnline.Api.Configurations
             services.AddScoped<IRequestHandler<ObterCursoPorIdQuery, CursoDto?>, CursosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterTodosOsCursosQuery, IEnumerable<CursoDto>>, CursosQueryHandler>();
             services.AddScoped<IRequestHandler<ObterAulasPorCursoIdQuery, IEnumerable<AulaDto?>>, CursosQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterAulaPorIdQuery, AulaDto?>, CursosQueryHandler>();
             services.AddScoped<IRequestHandler<CadastrarCursoCommand, CursoDto>, CursosCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarAulaCommand, AulaDto>, CursosCommandHandler>();
             services.AddScoped<IRequestHandler<AulaPertenceAoCursoQuery, bool>, CursosQueryHandler>();

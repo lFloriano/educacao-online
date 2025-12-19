@@ -7,6 +7,7 @@ namespace EducacaoOnline.Conteudo.Domain.Repositories
         Task<Curso?> ObterPorIdAsync(Guid id);
         Task<bool> ExisteCursoComMesmoNomeAsync(string nome);
         Task<IEnumerable<Aula>?> ObterAulasPorCursoIdAsync(Guid id);
+        Task<Aula?> ObterAulaPorIdAsync(Guid id);
         void AdicionarAula(Aula aula);
     }
 }
