@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using Xunit;
 using EducacaoOnline.Alunos.Domain;
 using EducacaoOnline.Alunos.Domain.Enums;
 
