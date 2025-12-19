@@ -12,12 +12,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace EducacaoOnline.IntegrationTests.Factories
 {
-    public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+    public class CustomWebApplicationFactory
+    : WebApplicationFactory<Program>, IAsyncDisposable
     {
-        private SqliteConnection? _connUsuarios;
-        private SqliteConnection? _connAlunos;
-        private SqliteConnection? _connCursos;
-        private SqliteConnection? _connPagamentos;
+        private SqliteConnection _connUsuarios = null!;
+        private SqliteConnection _connAlunos = null!;
+        private SqliteConnection _connCursos = null!;
+        private SqliteConnection _connPagamentos = null!;
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -26,52 +27,52 @@ namespace EducacaoOnline.IntegrationTests.Factories
             builder.ConfigureServices(services =>
             {
                 RemoverDbContexts(services);
-                CriarSqliteConnections();
+                CriarConexoesIsoladas();
                 AddDbContexts(services);
-                GarantirCriacaoDosBancos(services);
+                AplicarMigrations(services);
                 AddAutenticacao(services);
             });
         }
 
         private void RemoverDbContexts(IServiceCollection services)
         {
+            services.RemoveAll(typeof(DbContextOptions<UsuariosDbContext>));
             services.RemoveAll(typeof(DbContextOptions<AlunosDbContext>));
             services.RemoveAll(typeof(DbContextOptions<CursosDbContext>));
             services.RemoveAll(typeof(DbContextOptions<PagamentosDbContext>));
-            services.RemoveAll(typeof(DbContextOptions<UsuariosDbContext>));
         }
 
-        private void CriarSqliteConnections()
+        private void CriarConexoesIsoladas()
         {
-            _connUsuarios = new SqliteConnection("DataSource=file:testsUsuarios?mode=memory&cache=shared");
-            _connUsuarios.Open();
+            _connUsuarios = CriarConexao();
+            _connAlunos = CriarConexao();
+            _connCursos = CriarConexao();
+            _connPagamentos = CriarConexao();
+        }
 
-            _connAlunos = new SqliteConnection("DataSource=file:testsAlunos?mode=memory&cache=shared");
-            _connAlunos.Open();
-
-            _connCursos = new SqliteConnection("DataSource=file:testsCursos?mode=memory&cache=shared");
-            _connCursos.Open();
-
-            _connPagamentos = new SqliteConnection("DataSource=file:testsPagamentos?mode=memory&cache=shared");
-            _connPagamentos.Open();
+        private static SqliteConnection CriarConexao()
+        {
+            var conn = new SqliteConnection("DataSource=:memory:");
+            conn.Open();
+            return conn;
         }
 
         private void AddDbContexts(IServiceCollection services)
         {
-            services.AddDbContext<UsuariosDbContext>(opts => opts.UseSqlite(_connUsuarios));
-            services.AddDbContext<AlunosDbContext>(opts => opts.UseSqlite(_connAlunos));
-            services.AddDbContext<CursosDbContext>(opts => opts.UseSqlite(_connCursos));
-            services.AddDbContext<PagamentosDbContext>(opts => opts.UseSqlite(_connPagamentos));
+            services.AddDbContext<UsuariosDbContext>(o => o.UseSqlite(_connUsuarios));
+            services.AddDbContext<AlunosDbContext>(o => o.UseSqlite(_connAlunos));
+            services.AddDbContext<CursosDbContext>(o => o.UseSqlite(_connCursos));
+            services.AddDbContext<PagamentosDbContext>(o => o.UseSqlite(_connPagamentos));
         }
 
-        private void GarantirCriacaoDosBancos(IServiceCollection services)
+        private void AplicarMigrations(IServiceCollection services)
         {
             var sp = services.BuildServiceProvider();
             using var scope = sp.CreateScope();
-            scope.ServiceProvider.GetRequiredService<AlunosDbContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<CursosDbContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<PagamentosDbContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<UsuariosDbContext>().Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<UsuariosDbContext>().Database.Migrate();
+            scope.ServiceProvider.GetRequiredService<AlunosDbContext>().Database.Migrate();
+            scope.ServiceProvider.GetRequiredService<CursosDbContext>().Database.Migrate();
+            scope.ServiceProvider.GetRequiredService<PagamentosDbContext>().Database.Migrate();
         }
 
         private void AddAutenticacao(IServiceCollection services)
@@ -85,16 +86,13 @@ namespace EducacaoOnline.IntegrationTests.Factories
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", _ => { });
         }
 
-        protected override void Dispose(bool disposing)
+        public async ValueTask DisposeAsync()
         {
-            if (disposing)
-            {
-                _connUsuarios?.Dispose();
-                _connAlunos?.Dispose();
-                _connCursos?.Dispose();
-                _connPagamentos?.Dispose();
-            }
-            base.Dispose(disposing);
+            await _connUsuarios.DisposeAsync();
+            await _connAlunos.DisposeAsync();
+            await _connCursos.DisposeAsync();
+            await _connPagamentos.DisposeAsync();
         }
     }
+
 }
