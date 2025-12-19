@@ -21,8 +21,6 @@ namespace EducacaoOnline.IntegrationTests
         [Fact]
         public async Task ObterTodosOsCursosDeveRetornarSucesso()
         {
-            //arrange
-
             //act
             var response = await _httpClient.GetAsync("/api/cursos");
 
@@ -53,7 +51,8 @@ namespace EducacaoOnline.IntegrationTests
         [Fact]
         public async Task AdminCadastraAulaComSucesso()
         {
-            //arrange
+            #region cadastro do curso
+
             var cursoVm = new CadastrarCursoVm()
             {
                 Nome = "Introdução à Filosofia",
@@ -63,13 +62,16 @@ namespace EducacaoOnline.IntegrationTests
                 NumeroAulas = 2
             };
 
-            //act
             var cursoResponse = await _httpClient.PostAsJsonAsync("/api/cursos", cursoVm);
             cursoResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             var curso = await cursoResponse.Content.ReadFromJsonAsync<CursoDto>();
 
             curso.Should().NotBeNull();
             curso.Id.Should().NotBeEmpty();
+
+            #endregion
+
+            #region cadastro da aula
 
             var aulaVm = new CadastrarAulaVm()
             {
@@ -83,6 +85,7 @@ namespace EducacaoOnline.IntegrationTests
             aula.Should().NotBeNull();
             aula.Id.Should().NotBeEmpty();
             aula.Titulo.Should().Be("Escritos Aristotélicos");
+            #endregion
         }
     }
 }
