@@ -60,11 +60,6 @@ namespace EducacaoOnline.Alunos.Domain
             return _matriculas.Any(x => x.CursoId == cursoId);
         }
 
-        private bool MatriculaEstaPendente(Guid? cursoId)
-        {
-            return _matriculas.Any(x => x.CursoId == cursoId && x.Situacao == SituacaoMatricula.PendenteDePagamento);
-        }
-
         public Matricula? ObterMatriculaAtivaPorCursoId(Guid cursoId)
         {
             return Matriculas.FirstOrDefault(x => x.CursoId == cursoId && x.Situacao == SituacaoMatricula.Ativa);
@@ -106,7 +101,6 @@ namespace EducacaoOnline.Alunos.Domain
 
             var numeroCursosConcluidos = ObterCursosConcluidos().Count();
             return (int)((double)numeroCursosConcluidos / numeroCursosMatriculados * 100);
-
         }
     }
 }

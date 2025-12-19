@@ -82,6 +82,17 @@ namespace EducacaoOnline.Alunos.Tests.Domain
         }
 
         [Fact]
+        public void RealizarAula_QuandoSemMatriculaAtiva_DeveLancarInvalidOperationException()
+        {
+            var aluno = new Aluno(Guid.NewGuid(), "Nome", "email@teste.com");
+            var cursoId = Guid.NewGuid();
+            var aulaId = Guid.NewGuid();
+            aluno.Matricular(cursoId);
+
+            Assert.Throws<InvalidOperationException>(() => aluno.RealizarAula(aulaId, cursoId));
+        }
+
+        [Fact]
         public void FinalizarCurso_DeveConcluirMatriculaEgerarCertificado()
         {
             var aluno = new Aluno(Guid.NewGuid(), "Nome", "email@teste.com");
@@ -109,7 +120,7 @@ namespace EducacaoOnline.Alunos.Tests.Domain
         }
 
         [Fact]
-        public void ObterCursosMatriculados_ObterCursosConcluidos_EObterTaxaDeConclusaoDeCursos()
+        public void ObterCursosMatriculados_ObterCursosConcluidos_DeveCalcularTaxaDeConclusaoDeCursos()
         {
             var aluno = new Aluno(Guid.NewGuid(), "Nome", "email@teste.com");
             var c1 = Guid.NewGuid();
@@ -134,6 +145,15 @@ namespace EducacaoOnline.Alunos.Tests.Domain
             Assert.Equal(2, concluidos.Count);
             // (2 / 3) * 100 = 66.666... => cast para int => 66
             Assert.Equal(66, taxa);
+        }
+
+        [Fact]
+        public void CalcularTaxaDeConclusaoDeCursos_QuandoAlunoNaoEstaMatriculado_DeveRetornarZero()
+        {
+            var aluno = new Aluno(Guid.NewGuid(), "Nome", "email@teste.com");
+            var taxaConclusao = aluno.ObterTaxaDeConclusaoDeCursos();
+
+            Assert.Equal(0, taxaConclusao);
         }
     }
 }
